@@ -1,0 +1,12 @@
+# Byggmappar
+bin/
+obj/
+
+# User-specific filer
+.vs/
+*.user
+*.suo
+
+# OS-filer
+.DS_Store
+Thumbs.db
