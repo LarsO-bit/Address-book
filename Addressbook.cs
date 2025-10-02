@@ -44,7 +44,6 @@ class AddressBook
     }
 
     public void ShowAllContacts()
-
     {
         if (contactList.Count == 0)
         {
@@ -53,8 +52,42 @@ class AddressBook
         }
 
         foreach (var c in contactList)
-
+        {
             ShowContact(c);
+        }
+    }
+
+    public void SearchContacts()
+    {
+
+    }
+
+    public void MainMenu()
+    {
+        while (true)
+        {
+            Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Avsluta");
+            string val = Console.ReadLine() ?? "";
+
+            switch (val)
+            {
+                case "1":
+                    AddContact();
+                    break;
+                case "2":
+                    SearchContacts();
+                    break;
+
+                case "3":
+                    return;
+
+                default:
+                    Console.WriteLine("Ogiltligt val, försök igen");
+                    break;
+
+            }
+
+        }
     }
 
 }
