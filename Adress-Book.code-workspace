@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../Adress-Book"
+		},
+		{
+			"name": "Address-book",
+			"path": "../../Address-book"
+		}
+	],
+	"settings": {}
+}
