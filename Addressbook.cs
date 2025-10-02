@@ -51,10 +51,12 @@ class AddressBook
             return;
         }
 
-        foreach (var c in contactList)
+        for (int i = 0; i < contactList.Count; i++)
         {
-            ShowContact(c);
+            Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra (Förhoppningsvis rätt index som på lista??.sara)
+            ShowContact(contactList[i]);
         }
+
     }
 
     public void SearchContacts()
