@@ -64,9 +64,12 @@ class AddressBook
 
     public void MainMenu()
     {
+
+        Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Avsluta");
+        ShowAllContacts(); //Visar alla kontakter direkt när programmet öppnar. 
+
         while (true)
         {
-            Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Avsluta");
             string val = Console.ReadLine() ?? "";
 
             switch (val)
@@ -77,8 +80,11 @@ class AddressBook
                 case "2":
                     SearchContacts();
                     break;
-
                 case "3":
+                    ShowAllContacts();
+                    break;
+
+                case "4":
                     return;
 
                 default:
@@ -87,7 +93,11 @@ class AddressBook
 
             }
 
+            Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Avsluta");
+
         }
+
+
     }
 
 }

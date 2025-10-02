@@ -5,7 +5,6 @@ class Program
     {
         AddressBook Adressbok = new AddressBook();
         Adressbok.MainMenu();
-        Adressbok.ShowAllContacts();
     }
 }
 
