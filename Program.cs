@@ -1,4 +1,4 @@
-﻿
+
 class Program
 {
     static void Main()
@@ -6,3 +6,4 @@ class Program
         // Your initializing code here
     }
 }
+
