@@ -1,3 +1,11 @@
 bin/
 obj/
 .vs/
+Debug/
+Release/
+*.user
+*.suo
+*.log
+*.cache
+
+
