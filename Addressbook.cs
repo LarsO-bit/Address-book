@@ -85,6 +85,8 @@ class AddressBook
                 var removed = contactList[index];
                 contactList.RemoveAt(index);
 
+                ///// Här ska det in en delete för text filen, just nu raderas bara kontakten i programmet////
+
                 Console.WriteLine($"Kontakten {removed.Name} har tagit bort");
             }
             else
