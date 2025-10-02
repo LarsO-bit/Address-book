@@ -62,10 +62,15 @@ class AddressBook
 
     }
 
+    public void DeleteContact()
+    {
+
+    }
+
     public void MainMenu()
     {
 
-        Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Avsluta");
+        Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Radera kontakt (5) Avsluta");
         ShowAllContacts(); //Visar alla kontakter direkt när programmet öppnar. 
 
         while (true)
@@ -83,17 +88,18 @@ class AddressBook
                 case "3":
                     ShowAllContacts();
                     break;
-
                 case "4":
+                    DeleteContact();
+                    break;
+                case "5":
                     return;
 
                 default:
                     Console.WriteLine("Ogiltligt val, försök igen");
                     break;
-
             }
 
-            Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Avsluta");
+            Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Radera kontakt (5) Avsluta");
 
         }
 
