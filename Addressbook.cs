@@ -55,16 +55,26 @@ class AddressBook
         {
             Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra (Förhoppningsvis rätt index som på lista??.sara)
             ShowContact(contactList[i]);
+            foreach (var c in contactList)
+            {
+                ShowContact(c);
+            }
+
+
+        }
+
+    public void SaveContactToFile()
+    {
+        List<string> lines = new List<string>();
+
+        foreach (var c in contactList)
+        {
+            lines.Add(c.FormatForFile());
         }
 
     }
 
     public void SearchContacts()
-    {
-
-    }
-
-    public void DeleteContact()
     {
 
     }
@@ -106,6 +116,58 @@ class AddressBook
         }
 
 
+
+
+
+
+    public void DeleteContact()
+    {
+        if (contactList.Count == 0)
+        {
+            Console.WriteLine("Det finns inga kontakter att ta bort");
+            return;
+        }
+
+        for (int i = 0; i < contactList.Count; i++)
+        {
+            Console.WriteLine($"{i}: {contactList[i].Name}");
+        }
+
+
+
+        while (true)
+        {
+
+
+            Console.Write("Ange numret på kontakten du vill ta bort: ");
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                int index = choice;
+
+                if (index >= 0 && index < contactList.Count)
+                {
+                    var removed = contactList[index];
+                    contactList.RemoveAt(index);
+
+                    SaveContactToFile();
+
+                    Console.WriteLine($"Kontakten {removed.Name} har tagit bort");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt nummer.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Felaktigt inmatning, vänligen skriv ett nummer");
+            }
+
+        }
+
     }
 
 }
+
