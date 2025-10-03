@@ -71,9 +71,9 @@ class AddressBook
 
     }
 
-    
 
-    
+
+
 
     public void DeleteContact()
     {
@@ -85,12 +85,12 @@ class AddressBook
 
         for (int i = 0; i < contactList.Count; i++)
         {
-            Console.WriteLine($"{i}: {contactList[i].Name}"); // Utskriften blir att börjar på index 1 istället för 0.
+            Console.WriteLine($"{i}: {contactList[i].Name}");
         }
 
-        bool valid = false;
 
-        while (!valid)
+
+        while (true)
         {
 
 
@@ -98,16 +98,17 @@ class AddressBook
 
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
-                int index = choice; // List börjar på index 0.
+                int index = choice;
 
                 if (index >= 0 && index < contactList.Count)
                 {
                     var removed = contactList[index];
                     contactList.RemoveAt(index);
 
-                    ///// Här ska det in en delete för text filen, just nu raderas bara kontakten i programmet////
+                    SaveContactToFile();
 
                     Console.WriteLine($"Kontakten {removed.Name} har tagit bort");
+                    break;
                 }
                 else
                 {
