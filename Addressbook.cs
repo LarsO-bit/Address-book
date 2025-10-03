@@ -57,9 +57,23 @@ class AddressBook
             ShowContact(c);
         }
 
-            
+
     }
 
+    public void SaveContactToFile()
+    {
+        List<string> lines = new List<string>();
+
+        foreach (var c in contactList)
+        {
+            lines.Add(c.FormatForFile());
+        }
+
+    }
+
+    
+
+    
 
     public void DeleteContact()
     {
@@ -71,36 +85,42 @@ class AddressBook
 
         for (int i = 0; i < contactList.Count; i++)
         {
-            Console.WriteLine($"{i + 1}: {contactList[i].Name}"); // Utskriften blir att börjar på index 1 istället för 0.
+            Console.WriteLine($"{i}: {contactList[i].Name}"); // Utskriften blir att börjar på index 1 istället för 0.
         }
 
-        Console.Write("Ange numret på kontakten du vill ta bort: ");
+        bool valid = false;
 
-        if (int.TryParse(Console.ReadLine(), out int choice))
+        while (!valid)
         {
-            int index = choice - 1; // List börjar på index 0.
 
-            if (index >= 0 && index < contactList.Count)
+
+            Console.Write("Ange numret på kontakten du vill ta bort: ");
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
             {
-                var removed = contactList[index];
-                contactList.RemoveAt(index);
+                int index = choice; // List börjar på index 0.
 
-                ///// Här ska det in en delete för text filen, just nu raderas bara kontakten i programmet////
+                if (index >= 0 && index < contactList.Count)
+                {
+                    var removed = contactList[index];
+                    contactList.RemoveAt(index);
 
-                Console.WriteLine($"Kontakten {removed.Name} har tagit bort");
+                    ///// Här ska det in en delete för text filen, just nu raderas bara kontakten i programmet////
+
+                    Console.WriteLine($"Kontakten {removed.Name} har tagit bort");
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt nummer.");
+                }
             }
             else
             {
-                Console.WriteLine("Ogiltigt nummer.");
+                Console.WriteLine("Felaktigt inmatning, vänligen skriv ett nummer");
             }
-        }
-        else
-        {
-            Console.WriteLine("Felaktigt inmatning, vänligen skriv ett nummer");
+
         }
 
     }
-
-
 
 }
