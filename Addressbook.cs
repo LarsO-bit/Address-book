@@ -2,7 +2,6 @@ using System;
 
 class AddressBook
 {
-
     List<Contact> contactList = new(); //Skapa ny lista 
 
     public void AddContact()
@@ -31,7 +30,6 @@ class AddressBook
         Console.WriteLine($"Ny kontakt sparad: {contact.Name}.\n");
     }
 
-
     public void ShowContact(Contact contact)
     {
         Console.WriteLine($"Namn: {contact.Name}");
@@ -53,15 +51,10 @@ class AddressBook
 
         for (int i = 0; i < contactList.Count; i++)
         {
-            Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra (Förhoppningsvis rätt index som på lista??.sara)
+            Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra
             ShowContact(contactList[i]);
-            foreach (var c in contactList)
-            {
-                ShowContact(c);
-            }
-
-
         }
+    }
 
     public void SaveContactToFile()
     {
@@ -71,7 +64,6 @@ class AddressBook
         {
             lines.Add(c.FormatForFile());
         }
-
     }
 
     public void SearchContacts()
@@ -81,7 +73,6 @@ class AddressBook
 
     public void MainMenu()
     {
-
         Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Radera kontakt (5) Avsluta");
         ShowAllContacts(); //Visar alla kontakter direkt när programmet öppnar. 
 
@@ -112,13 +103,8 @@ class AddressBook
             }
 
             Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Radera kontakt (5) Avsluta");
-
         }
-
-
-
-
-
+    }
 
     public void DeleteContact()
     {
@@ -133,12 +119,8 @@ class AddressBook
             Console.WriteLine($"{i}: {contactList[i].Name}");
         }
 
-
-
         while (true)
         {
-
-
             Console.Write("Ange numret på kontakten du vill ta bort: ");
 
             if (int.TryParse(Console.ReadLine(), out int choice))
@@ -164,10 +146,6 @@ class AddressBook
             {
                 Console.WriteLine("Felaktigt inmatning, vänligen skriv ett nummer");
             }
-
         }
-
     }
-
 }
-
