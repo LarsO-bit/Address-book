@@ -53,8 +53,74 @@ class AddressBook
         }
 
         foreach (var c in contactList)
-
+        {
             ShowContact(c);
+        }
+
+
+    }
+
+    public void SaveContactToFile()
+    {
+        List<string> lines = new List<string>();
+
+        foreach (var c in contactList)
+        {
+            lines.Add(c.FormatForFile());
+        }
+
+    }
+
+    
+
+    
+
+    public void DeleteContact()
+    {
+        if (contactList.Count == 0)
+        {
+            Console.WriteLine("Det finns inga kontakter att ta bort");
+            return;
+        }
+
+        for (int i = 0; i < contactList.Count; i++)
+        {
+            Console.WriteLine($"{i}: {contactList[i].Name}"); // Utskriften blir att börjar på index 1 istället för 0.
+        }
+
+        bool valid = false;
+
+        while (!valid)
+        {
+
+
+            Console.Write("Ange numret på kontakten du vill ta bort: ");
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                int index = choice; // List börjar på index 0.
+
+                if (index >= 0 && index < contactList.Count)
+                {
+                    var removed = contactList[index];
+                    contactList.RemoveAt(index);
+
+                    ///// Här ska det in en delete för text filen, just nu raderas bara kontakten i programmet////
+
+                    Console.WriteLine($"Kontakten {removed.Name} har tagit bort");
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt nummer.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Felaktigt inmatning, vänligen skriv ett nummer");
+            }
+
+        }
+
     }
 
 }
