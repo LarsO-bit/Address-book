@@ -2,8 +2,23 @@ using System;
 
 class AddressBook
 {
+    private readonly FileManager fileManager;
+
+    public AddressBook(FileManager _fileManager)
+    {
+        fileManager = _fileManager;
+
+        foreach (var line in _fileManager.ReadLinesFromFile())
+        {
+            if (!string.IsNullOrWhiteSpace(line))
+                contactList.Add(Contact.FromFile(line));
+        }
+    }
 
     List<Contact> contactList = new(); //Skapa ny lista 
+
+
+
 
     public void AddContact()
     {
@@ -27,6 +42,7 @@ class AddressBook
 
         var contact = new Contact(name, address, postalcode, city, phone, email); //Skapar ett objekt av klassen Contact
         contactList.Add(contact); //Lägger till contacten i listan 
+        SaveContactToFile();
 
         Console.WriteLine($"Ny kontakt sparad: {contact.Name}.\n");
     }
@@ -68,7 +84,7 @@ class AddressBook
         {
             lines.Add(c.FormatForFile());
         }
-
+        fileManager.WriteLinesToFile(lines);
     }
 
 
@@ -107,7 +123,7 @@ class AddressBook
 
                     SaveContactToFile();
 
-                    Console.WriteLine($"Kontakten {removed.Name} har tagit bort");
+                    Console.WriteLine($"Kontakten {removed.Name} har tagits bort");
                     break;
                 }
                 else

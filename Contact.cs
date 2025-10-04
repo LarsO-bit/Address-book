@@ -31,7 +31,22 @@ public class Contact
 
     }
 
+    public static Contact FromFile(string line)
+    {
+        var columns = line.Split(',', StringSplitOptions.None);
+        return new Contact(
+        columns.ElementAtOrDefault(0) ?? "",
+        columns.ElementAtOrDefault(1) ?? "",
+        columns.ElementAtOrDefault(2) ?? "",
+        columns.ElementAtOrDefault(3) ?? "",
+        columns.ElementAtOrDefault(4) ?? "",
+        columns.ElementAtOrDefault(5) ?? "");
+                    
 
+
+
+
+    }
 
 
 
