@@ -2,8 +2,17 @@ using System;
 
 class AddressBook
 {
+    private readonly FileManager fileManager;
+
+    public AddressBook(FileManager _fileManager)
+    {
+        fileManager = _fileManager;
+    }
 
     List<Contact> contactList = new(); //Skapa ny lista 
+
+
+
 
     public void AddContact()
     {
@@ -27,6 +36,7 @@ class AddressBook
 
         var contact = new Contact(name, address, postalcode, city, phone, email); //Skapar ett objekt av klassen Contact
         contactList.Add(contact); //Lägger till contacten i listan 
+        SaveContactToFile();
 
         Console.WriteLine($"Ny kontakt sparad: {contact.Name}.\n");
     }
@@ -51,6 +61,76 @@ class AddressBook
             return;
         }
 
+
+        foreach (var c in contactList)
+        {
+            ShowContact(c);
+        }
+
+
+    }
+
+    public void SaveContactToFile()
+    {
+        List<string> lines = new List<string>();
+
+        foreach (var c in contactList)
+        {
+            lines.Add(c.FormatForFile());
+        }
+        fileManager.WriteLinesToFile(lines);
+    }
+
+
+
+
+
+    public void DeleteContact()
+    {
+        if (contactList.Count == 0)
+        {
+            Console.WriteLine("Det finns inga kontakter att ta bort");
+            return;
+        }
+
+        for (int i = 0; i < contactList.Count; i++)
+        {
+            Console.WriteLine($"{i}: {contactList[i].Name}");
+        }
+
+        while (true)
+        {
+
+
+            Console.Write("Ange numret på kontakten du vill ta bort: ");
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                int index = choice;
+
+                if (index >= 0 && index < contactList.Count)
+                {
+                    var removed = contactList[index];
+                    contactList.RemoveAt(index);
+
+                    SaveContactToFile();
+
+                    Console.WriteLine($"Kontakten {removed.Name} har tagits bort");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt nummer.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Felaktigt inmatning, vänligen skriv ett nummer");
+            }
+
+        }
+
+
         for (int i = 0; i < contactList.Count; i++)
         {
             Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra (Förhoppningsvis rätt index som på lista??.sara)
@@ -64,10 +144,7 @@ class AddressBook
 
     }
 
-    public void DeleteContact()
-    {
-
-    }
+    
 
     public void MainMenu()
     {
@@ -104,6 +181,7 @@ class AddressBook
             Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Radera kontakt (5) Avsluta");
 
         }
+
 
 
     }
