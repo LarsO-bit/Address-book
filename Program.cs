@@ -1,9 +1,10 @@
-
+﻿
 class Program
 {
     static void Main()
     {
-        // Your initializing code here
+        AddressBook addressBook = new AddressBook();
+        addressBook.MainMenu();
     }
 }
 
