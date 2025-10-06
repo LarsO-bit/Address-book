@@ -7,12 +7,6 @@ class AddressBook
     public AddressBook(FileManager _fileManager)
     {
         fileManager = _fileManager;
-
-        foreach (var line in _fileManager.ReadLinesFromFile())
-        {
-            if (!string.IsNullOrWhiteSpace(line))
-                contactList.Add(Contact.FromFile(line));
-        }
     }
 
     List<Contact> contactList = new(); //Skapa ny lista 
@@ -103,8 +97,6 @@ class AddressBook
         {
             Console.WriteLine($"{i}: {contactList[i].Name}");
         }
-
-
 
         while (true)
         {
