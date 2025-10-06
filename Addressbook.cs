@@ -60,13 +60,13 @@ class AddressBook
     }
 
     public void ShowAllContacts()
-
     {
         if (contactList.Count == 0)
         {
             Console.WriteLine("Du har inga kontakter att visa.");
             return;
         }
+
 
         foreach (var c in contactList)
         {
@@ -137,6 +137,60 @@ class AddressBook
             }
 
         }
+
+
+        for (int i = 0; i < contactList.Count; i++)
+        {
+            Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra (Förhoppningsvis rätt index som på lista??.sara)
+            ShowContact(contactList[i]);
+        }
+
+    }
+
+    public void SearchContacts()
+    {
+
+    }
+
+    
+
+    public void MainMenu()
+    {
+
+        Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Radera kontakt (5) Avsluta");
+        ShowAllContacts(); //Visar alla kontakter direkt när programmet öppnar. 
+
+        while (true)
+        {
+            string val = Console.ReadLine() ?? "";
+
+            switch (val)
+            {
+                case "1":
+                    AddContact();
+                    break;
+                case "2":
+                    SearchContacts();
+                    break;
+                case "3":
+                    ShowAllContacts();
+                    break;
+                case "4":
+                    DeleteContact();
+                    break;
+                case "5":
+                    return;
+
+                default:
+                    Console.WriteLine("Ogiltligt val, försök igen");
+                    break;
+            }
+
+            Console.WriteLine("(1) Lägg till ny kontakt (2) Sök kontakt (3) Visa alla kontakter (4) Radera kontakt (5) Avsluta");
+
+        }
+
+
 
     }
 
