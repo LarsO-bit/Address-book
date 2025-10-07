@@ -210,7 +210,7 @@ class AddressBook
         SaveContactsToFile();
     }
 
-    public void SaveContactsToFile()
+    public void SaveContactsToFile() // Sparar alla kontakter i listan till filen, anropas när en ny kontakt skapas, tas bort eller uppdateras.
     {
         var lines = contactList.Select(c => c.FormatForFile());
         fileManager.WriteLinesToFile(lines);
