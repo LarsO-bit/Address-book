@@ -53,10 +53,10 @@ class AddressBook
             return;
         }
 
-
-        foreach (var c in contactList)
+        for (int i = 0; i < contactList.Count; i++)
         {
-            ShowContact(c);
+            Console.WriteLine($"\n===== Kontakt nr: {i + 1} =====");
+            ShowContact(contactList[i]);
         }
     }
 
@@ -70,7 +70,7 @@ class AddressBook
 
         for (int i = 0; i < contactList.Count; i++)
         {
-            Console.WriteLine($"{i}: {contactList[i].Name}");
+            Console.WriteLine($"{i + 1}: {contactList[i].Name}");
         }
 
         while (true)
@@ -81,7 +81,7 @@ class AddressBook
 
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
-                int index = choice;
+                int index = choice - 1;
 
                 if (index >= 0 && index < contactList.Count)
                 {
@@ -106,7 +106,7 @@ class AddressBook
 
         for (int i = 0; i < contactList.Count; i++)
         {
-            Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra (Förhoppningsvis rätt index som på lista??.sara)
+            Console.WriteLine($"\n===== Kontakt nr: {i + 1} =====");
             ShowContact(contactList[i]);
         }
         SaveContactsToFile();
@@ -115,7 +115,39 @@ class AddressBook
 
     public void SearchContacts()
     {
+        Console.Write("Sök kontakt: ");
+        string searchWord = (Console.ReadLine() ?? "").Trim();
 
+        if (string.IsNullOrWhiteSpace(searchWord))
+        {
+            Console.WriteLine("Du har gjort en felaktig inmatning. Försök igen.");
+            return;
+        }
+
+        var result = contactList
+            .Select((Contact, OriginalIndex) => new { Contact, OriginalIndex })
+            .Where(x =>
+                x.Contact.Name.Contains(searchWord, StringComparison.OrdinalIgnoreCase) ||
+                x.Contact.Address.Contains(searchWord, StringComparison.OrdinalIgnoreCase) ||
+                x.Contact.PostalCode.Contains(searchWord, StringComparison.OrdinalIgnoreCase) ||
+                x.Contact.City.Contains(searchWord, StringComparison.OrdinalIgnoreCase) ||
+                x.Contact.PhoneNumber.Contains(searchWord, StringComparison.OrdinalIgnoreCase) ||
+                x.Contact.Email.Contains(searchWord, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        if (result.Count == 0)
+        {
+            Console.WriteLine("Du har inga kontakter att visa.");
+            return;
+        }
+
+        Console.WriteLine($"\nTräffar: {result.Count}\n");
+
+        foreach (var foundContact in result)
+        {
+            Console.WriteLine($"\n===== Kontakt nr: {foundContact.OriginalIndex + 1} =====");
+            ShowContact(foundContact.Contact);
+        }
     }
 
     public void UpdateContact()
