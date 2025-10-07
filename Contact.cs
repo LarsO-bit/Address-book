@@ -1,3 +1,4 @@
+
 public class Contact
 {
 
@@ -31,11 +32,12 @@ public class Contact
 
     }
 
+    public static Contact FromFileString(string line)
+    {
+        
+    var parts = line.Split(',');
 
+    return new Contact(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 
-
-
-
-
-
+    }
 }
