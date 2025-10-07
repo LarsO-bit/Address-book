@@ -3,7 +3,12 @@ using System;
 class AddressBook
 {
     List<Contact> contactList = new(); //Skapa ny lista 
-    private readonly FileManager fileManager = new("Adressbok.txt");
+    private readonly FileManager fileManager;
+    public AddressBook()
+    {
+        fileManager = new FileManager("Addressbook.txt");
+        LoadContactFile();
+    }
 
     public void AddContact()
     {
@@ -27,8 +32,7 @@ class AddressBook
 
         var contact = new Contact(name, address, postalcode, city, phone, email); //Skapar ett objekt av klassen Contact
         contactList.Add(contact); //Lägger till contacten i listan 
-
-
+        
         Console.WriteLine($"Ny kontakt sparad: {contact.Name}.\n");
         SaveContactsToFile();
     }
@@ -60,6 +64,19 @@ class AddressBook
         }
     }
 
+    public void LoadContactFile()
+    {
+        contactList = new List<Contact>();
+        List<string> lines = fileManager.ReadLinesFromFile();
+
+        foreach (var line in lines)
+        {
+            Contact contact = Contact.FromFileString(line);
+            contactList.Add(contact);
+        }
+                            
+    }
+
     public void DeleteContact()
     {
         if (contactList.Count == 0)
@@ -87,6 +104,7 @@ class AddressBook
                 {
                     var removed = contactList[index];
                     contactList.RemoveAt(index);
+                    SaveContactsToFile();
 
                     Console.WriteLine($"Kontakten {removed.Name} har tagits bort");
                     break;
