@@ -3,6 +3,7 @@ using System;
 class AddressBook
 {
     List<Contact> contactList = new(); //Skapa ny lista 
+    private readonly FileManager fileManager = new("Adressbok.txt");
 
     public void AddContact()
     {
@@ -29,6 +30,7 @@ class AddressBook
 
 
         Console.WriteLine($"Ny kontakt sparad: {contact.Name}.\n");
+        SaveContactsToFile();
     }
 
 
@@ -107,6 +109,7 @@ class AddressBook
             Console.WriteLine($"Nr {i + 1}."); //Ger varje kontakt en siffra (Förhoppningsvis rätt index som på lista??.sara)
             ShowContact(contactList[i]);
         }
+        SaveContactsToFile();
 
     }
 
@@ -204,6 +207,13 @@ class AddressBook
         }
 
         Console.WriteLine($"\n✅ Kontakt uppdaterad: {contact.Name}\n");
+        SaveContactsToFile();
+    }
+
+    public void SaveContactsToFile()
+    {
+        var lines = contactList.Select(c => c.FormatForFile());
+        fileManager.WriteLinesToFile(lines);
     }
 
     public void MainMenu()
@@ -239,11 +249,7 @@ class AddressBook
                     Console.WriteLine("Ogiltligt val, försök igen");
                     break;
             }
-
         }
-
-
-
     }
 
 }
