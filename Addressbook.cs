@@ -12,29 +12,28 @@ class AddressBook
 
     private string ReadLineWithEscapeToMainMenu()
     {
-        var input = new System.Text.StringBuilder();
+        var input = new System.Text.StringBuilder();    //Skapa en StringBuilder för att lagra inmatningen
 
         while (true)
         {
-            var key = Console.ReadKey(intercept: true);
+            var key = Console.ReadKey(intercept: true); //Läser en tangenttryckning utan att visa den i konsolen
 
-            if (key.Key == ConsoleKey.Enter)
+            if (key.Key == ConsoleKey.Enter)            //Om Enter trycks, returnera den insamlade strängen
             {
                 Console.WriteLine();
                 return input.ToString();
             }
-            else if (key.Key == ConsoleKey.Escape)
-            {
-                Console.WriteLine();
-                throw new OperationCanceledException("Användaren tryckte på Escape.");
-            }
-            else if (key.Key == ConsoleKey.Backspace)
+            else if (key.Key == ConsoleKey.Backspace)   //Om Backspace trycks, ta bort sista tecknet från strängen och uppdatera konsolen
             {
                 if (input.Length > 0)
                 {
                     input.Remove(input.Length - 1, 1);
                     Console.Write("\b \b");
                 }
+            }
+            else if (key.Key == ConsoleKey.Escape)       //Om Escape trycks, kasta ett undantag för att indikera avbrott
+            {
+                throw new OperationCanceledException("Användaren avbröt inmatningen.");
             }
             else
             {
@@ -44,7 +43,7 @@ class AddressBook
         }
     }
 
-   public void AddContact()
+    public void AddContact()
     {
         try
         {
@@ -78,7 +77,6 @@ class AddressBook
             return; // Simply return to main menu
         }
     }   
-
 
     public void ShowContact(Contact contact)
     {
@@ -121,7 +119,9 @@ class AddressBook
 
     public void DeleteContact()
     {
-        if (contactList.Count == 0)
+        try
+        {
+            if (contactList.Count == 0)
         {
             Console.WriteLine("Det finns inga kontakter att ta bort");
             return;
@@ -170,13 +170,22 @@ class AddressBook
             ShowContact(contactList[i]);
         }
         SaveContactsToFile();
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("\n Tillbaka till huvudmenyn.\n");
+            return; // Simply return to main menu
+        }
+        
 
     }
 
     public void SearchContacts()
     {
-        Console.Write("Sök kontakt: ");
-        string searchWord = (ReadLineWithEscapeToMainMenu()?? "").Trim();
+        try
+        {
+            Console.Write("Sök kontakt: ");
+        string searchWord = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
         if (string.IsNullOrWhiteSpace(searchWord))
         {
@@ -208,11 +217,20 @@ class AddressBook
             Console.WriteLine($"\n===== Kontakt nr: {foundContact.OriginalIndex + 1} =====");
             ShowContact(foundContact.Contact);
         }
-    }
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("\n Tillbaka till huvudmenyn.\n");
+            return; // Simply return to main menu
+        }
+        
+        }
 
     public void UpdateContact()
     {
-        ShowAllContacts();
+        try
+        {
+            ShowAllContacts();
 
         Console.Write("\nAnge numret på kontakten du vill uppdatera: ");
         if (!int.TryParse(ReadLineWithEscapeToMainMenu(), out int index) || index <= 0 || index > contactList.Count)
@@ -298,8 +316,15 @@ class AddressBook
             }
         }
 
-        Console.WriteLine($"\n✅ Kontakt uppdaterad: {contact.Name}\n");
+        Console.WriteLine($"\n Kontakt uppdaterad: {contact.Name}\n");
         SaveContactsToFile();
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("\n Tillbaka till huvudmenyn.\n");
+            return; // Simply return to main menu
+        }
+        
     }
 
     public void SaveContactsToFile() // Sparar alla kontakter i listan till filen, anropas när en ny kontakt skapas, tas bort eller uppdateras.
@@ -314,7 +339,7 @@ class AddressBook
 
         while (true)
         {
-            Console.WriteLine("(1) Lägg till ny kontakt \n(2) Sök kontakt \n(3) Visa alla kontakter \n(4) Radera kontakt \n(5) Uppdatera kontakt\n(6) Avsluta \n Tryck på Escape för att återgå till huvudmenyn när som helst.");
+            Console.WriteLine("(1) Lägg till ny kontakt \n(2) Sök kontakt \n(3) Visa alla kontakter \n(4) Radera kontakt \n(5) Uppdatera kontakt\n(6) Avsluta \nTryck på Escape för att återgå till huvudmenyn när som helst.");
             string val =ReadLineWithEscapeToMainMenu()?? "";
 
             switch (val)
