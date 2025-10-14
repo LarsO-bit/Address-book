@@ -10,25 +10,60 @@ class AddressBook
         LoadContactFile();
     }
 
+    private string ReadLineWithEscapeToMainMenu()
+    {
+        var input = new System.Text.StringBuilder();    //Skapa en StringBuilder för att lagra inmatningen
+
+        while (true)
+        {
+            var key = Console.ReadKey(intercept: true); //Läser en tangenttryckning utan att visa den i konsolen
+
+            if (key.Key == ConsoleKey.Enter)            //Om Enter trycks, returnera den insamlade strängen
+            {
+                Console.WriteLine();
+                return input.ToString();
+            }
+            else if (key.Key == ConsoleKey.Backspace)   //Om Backspace trycks, ta bort sista tecknet från strängen och uppdatera konsolen
+            {
+                if (input.Length > 0)
+                {
+                    input.Remove(input.Length - 1, 1);
+                    Console.Write("\b \b");
+                }
+            }
+            else if (key.Key == ConsoleKey.Escape)       //Om Escape trycks, kasta ett undantag för att indikera avbrott
+            {
+                throw new OperationCanceledException("Användaren avbröt inmatningen.");
+            }
+            else
+            {
+                input.Append(key.KeyChar);
+                Console.Write(key.KeyChar);
+            }
+        }
+    }
+
     public void AddContact()
     {
-        Console.Write("Namn: ");
-        string name = (Console.ReadLine() ?? "").Trim();
+        try
+        {
+            Console.Write("Namn: ");
+            string name = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
-        Console.Write("Adress: ");
-        string address = (Console.ReadLine() ?? "").Trim();
+            Console.Write("Adress: ");
+            string address = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
-        Console.Write("Postnummer: ");
-        string postalcode = (Console.ReadLine() ?? "").Trim();
+            Console.Write("Postnummer: ");
+            string postalcode = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
-        Console.Write("Postort: ");
-        string city = (Console.ReadLine() ?? "").Trim();
+            Console.Write("Postort: ");
+            string city = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
-        Console.Write("Telefonnummer: ");
-        string phone = (Console.ReadLine() ?? "").Trim();
+            Console.Write("Telefonnummer: ");
+            string phone = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
-        Console.Write("Email: ");
-        string email = (Console.ReadLine() ?? "").Trim();
+            Console.Write("Email: ");
+            string email = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
         var contact = new Contact(name, address, postalcode, city, phone, email); //Skapar ett objekt av klassen Contact
         contactList.Add(contact); //Lägger till contacten i listan 
@@ -37,6 +72,15 @@ class AddressBook
         SaveContactsToFile();
     }
 
+            Console.WriteLine($"\n Ny kontakt sparad: {contact.Name}.\n");
+            SaveContactsToFile();
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("\n Tillbaka till huvudmenyn.\n");
+            return; // Simply return to main menu
+        }
+    }   
 
     public void ShowContact(Contact contact)
     {
@@ -79,7 +123,9 @@ class AddressBook
 
     public void DeleteContact()
     {
-        if (contactList.Count == 0)
+        try
+        {
+            if (contactList.Count == 0)
         {
             Console.WriteLine("Det finns inga kontakter att ta bort");
             return;
@@ -96,7 +142,7 @@ class AddressBook
 
             Console.Write("Ange numret på kontakten du vill ta bort: ");
 
-            if (int.TryParse(Console.ReadLine(), out int choice))
+            if (int.TryParse(ReadLineWithEscapeToMainMenu(), out int choice))
             {
                 int index = choice - 1;
 
@@ -128,13 +174,22 @@ class AddressBook
             ShowContact(contactList[i]);
         }
         SaveContactsToFile();
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("\n Tillbaka till huvudmenyn.\n");
+            return; // Simply return to main menu
+        }
+        
 
     }
 
     public void SearchContacts()
     {
-        Console.Write("Sök kontakt: ");
-        string searchWord = (Console.ReadLine() ?? "").Trim();
+        try
+        {
+            Console.Write("Sök kontakt: ");
+        string searchWord = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
         if (string.IsNullOrWhiteSpace(searchWord))
         {
@@ -166,14 +221,23 @@ class AddressBook
             Console.WriteLine($"\n===== Kontakt nr: {foundContact.OriginalIndex + 1} =====");
             ShowContact(foundContact.Contact);
         }
-    }
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("\n Tillbaka till huvudmenyn.\n");
+            return; // Simply return to main menu
+        }
+        
+        }
 
     public void UpdateContact()
     {
-        ShowAllContacts();
+        try
+        {
+            ShowAllContacts();
 
         Console.Write("\nAnge numret på kontakten du vill uppdatera: ");
-        if (!int.TryParse(Console.ReadLine(), out int index) || index <= 0 || index > contactList.Count)
+        if (!int.TryParse(ReadLineWithEscapeToMainMenu(), out int index) || index <= 0 || index > contactList.Count)
         {
             Console.WriteLine("Ogiltigt val.");
             return;
@@ -195,48 +259,48 @@ class AddressBook
             Console.WriteLine("7. Avsluta uppdatering");
             Console.Write("\nVälj ett alternativ: ");
 
-            string choice = Console.ReadLine() ?? "";
+            string choice =ReadLineWithEscapeToMainMenu()?? "";
 
             switch (choice)
             {
                 case "1":
                     Console.Write($"Nytt namn (nuvarande: {contact.Name}): ");
-                    string newName = Console.ReadLine()?.Trim();
+                    string newName =ReadLineWithEscapeToMainMenu().Trim();
                     if (!string.IsNullOrEmpty(newName))
                         contact.Name = newName;
                     break;
 
                 case "2":
                     Console.Write($"Ny adress (nuvarande: {contact.Address}): ");
-                    string newAddress = Console.ReadLine()?.Trim();
+                    string newAddress =ReadLineWithEscapeToMainMenu().Trim();
                     if (!string.IsNullOrEmpty(newAddress))
                         contact.Address = newAddress;
                     break;
 
                 case "3":
                     Console.Write($"Nytt postnummer (nuvarande: {contact.PostalCode}): ");
-                    string newPostal = Console.ReadLine()?.Trim();
+                    string newPostal =ReadLineWithEscapeToMainMenu().Trim();
                     if (!string.IsNullOrEmpty(newPostal))
                         contact.PostalCode = newPostal;
                     break;
 
                 case "4":
                     Console.Write($"Ny postort (nuvarande: {contact.City}): ");
-                    string newCity = Console.ReadLine()?.Trim();
+                    string newCity =ReadLineWithEscapeToMainMenu().Trim();
                     if (!string.IsNullOrEmpty(newCity))
                         contact.City = newCity;
                     break;
 
                 case "5":
                     Console.Write($"Nytt telefonnummer (nuvarande: {contact.PhoneNumber}): ");
-                    string newPhoneNumber = Console.ReadLine()?.Trim();
+                    string newPhoneNumber =ReadLineWithEscapeToMainMenu().Trim();
                     if (!string.IsNullOrEmpty(newPhoneNumber))
                         contact.PhoneNumber = newPhoneNumber;
                     break;
 
                 case "6":
                     Console.Write($"Ny e-post (nuvarande: {contact.Email}): ");
-                    string newEmail = Console.ReadLine()?.Trim();
+                    string newEmail =ReadLineWithEscapeToMainMenu().Trim();
                     if (!string.IsNullOrEmpty(newEmail))
                         contact.Email = newEmail;
                     break;
@@ -256,8 +320,15 @@ class AddressBook
             }
         }
 
-        Console.WriteLine($"\n✅ Kontakt uppdaterad: {contact.Name}\n");
+        Console.WriteLine($"\n Kontakt uppdaterad: {contact.Name}\n");
         SaveContactsToFile();
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("\n Tillbaka till huvudmenyn.\n");
+            return; // Simply return to main menu
+        }
+        
     }
 
     public void SaveContactsToFile() // Sparar alla kontakter i listan till filen, anropas när en ny kontakt skapas, tas bort eller uppdateras.
@@ -272,8 +343,8 @@ class AddressBook
 
         while (true)
         {
-            Console.WriteLine("(1) Lägg till ny kontakt \n(2) Sök kontakt \n(3) Visa alla kontakter \n(4) Radera kontakt \n(5) Uppdatera kontakt\n(6) Avsluta");
-            string val = Console.ReadLine() ?? "";
+            Console.WriteLine("(1) Lägg till ny kontakt \n(2) Sök kontakt \n(3) Visa alla kontakter \n(4) Radera kontakt \n(5) Uppdatera kontakt\n(6) Avsluta \nTryck på Escape för att återgå till huvudmenyn när som helst.");
+            string val =ReadLineWithEscapeToMainMenu()?? "";
 
             switch (val)
             {
