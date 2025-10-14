@@ -65,8 +65,12 @@ class AddressBook
             Console.Write("Email: ");
             string email = (ReadLineWithEscapeToMainMenu() ?? "").Trim();
 
-            var contact = new Contact(name, address, postalcode, city, phone, email);
-            contactList.Add(contact);
+        var contact = new Contact(name, address, postalcode, city, phone, email); //Skapar ett objekt av klassen Contact
+        contactList.Add(contact); //Lägger till contacten i listan 
+
+        Console.WriteLine($"Ny kontakt sparad: {contact.Name}.\n");
+        SaveContactsToFile();
+    }
 
             Console.WriteLine($"\n Ny kontakt sparad: {contact.Name}.\n");
             SaveContactsToFile();
@@ -114,7 +118,7 @@ class AddressBook
             Contact contact = Contact.FromFileString(line);
             contactList.Add(contact);
         }
-                            
+
     }
 
     public void DeleteContact()
@@ -129,7 +133,7 @@ class AddressBook
 
         for (int i = 0; i < contactList.Count; i++)
         {
-            Console.WriteLine($"{i + 1}: {contactList[i].Name}");
+            ShowAllContacts();
         }
 
         while (true)
@@ -335,7 +339,7 @@ class AddressBook
 
     public void MainMenu()
     {
-        ShowAllContacts(); //Visar alla kontakter direkt när programmet öppnar. 
+
 
         while (true)
         {

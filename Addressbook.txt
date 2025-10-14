@@ -1,5 +1,1 @@
-Frida,Korsvägen,,5,5,5
-Lars,Haga,1,d,d,d
-,,,,,
-lars,f,f,f,f,f
-lkjsd',,,,,
+
