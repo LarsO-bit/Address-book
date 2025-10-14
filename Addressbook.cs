@@ -335,12 +335,11 @@ class AddressBook
 
     public void MainMenu()
     {
-        ShowAllContacts(); //Visar alla kontakter direkt när programmet öppnar. 
 
         while (true)
         {
             Console.WriteLine("(1) Lägg till ny kontakt \n(2) Sök kontakt \n(3) Visa alla kontakter \n(4) Radera kontakt \n(5) Uppdatera kontakt\n(6) Avsluta \nTryck på Escape för att återgå till huvudmenyn när som helst.");
-            string val =ReadLineWithEscapeToMainMenu()?? "";
+            string val =Console.ReadLine()?? "";
 
             switch (val)
             {
